@@ -43,7 +43,7 @@ public:
     // 0 - 6
     uint16_t wday();
 
-    inline const int64_t& unixtime() { return unixtime_; }
+    inline const uint64_t& unixtime() { return unixtime_; }
     void setUnixtime(int64_t unixtime = 0);
     inline void operator=(int64_t unixtime) { setUnixtime(unixtime); }
     inline void operator=(const std::string& strTime) { fromString(strTime); }
