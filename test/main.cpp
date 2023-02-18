@@ -1,8 +1,3 @@
-# OpenTime
-OpenTime for C++, Super easy to use Time!
-
-## Test Demo
-```C++
 #include <assert.h>
 #include <iostream>
 #include <vector>
@@ -78,20 +73,3 @@ int main()
     std::cout << "Current milliTimeStamp:" << OpenTime(milliTimeStamp / 1000).toString(milliTimeStamp % 1000) << std::endl;
     return 0;
 }
-```
-
-## Environment
-Windows、linux etc. Cross-platform design
-
-## Build and run
-```
-cd ./opentime
-mkdir build
-cd build
-cmake ..
-make
-./test
-```
-## Source file list
-. src/opentime.h
-. src/opentime.cpp
