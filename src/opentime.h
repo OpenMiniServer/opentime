@@ -26,20 +26,23 @@ public:
     uint16_t hour_;   // 0-23
     uint16_t day_;    // 1-31
     uint16_t month_;  // 1-12
-    uint16_t year_;   // 1970 - 2100
+    uint32_t year_;   // 1970 - 2100
     uint64_t unixtime_;
     uint16_t timezone_; // -17 - 17
 
     OpenTime();
     OpenTime(int64_t unixtime, int timezone = OPENTIME_TIMEZONE);
     OpenTime(int year, int mouth, int day, int hour, int minute, int second, int timezone = OPENTIME_TIMEZONE);
+    OpenTime(const OpenTime& openTime);
+    void operator=(const OpenTime& openTime);
+    bool operator==(const OpenTime& openTime);
 
     inline const uint16_t& second() { return second_; }
     inline const uint16_t& minute() { return minute_; }
     inline const uint16_t& hour() { return hour_; }
     inline const uint16_t& day() { return day_; }
     inline const uint16_t& month() { return month_; }
-    inline const uint16_t& year() { return year_; }
+    inline const uint32_t& year() { return year_; }
     // 0 - 6
     uint16_t wday();
 
@@ -54,6 +57,7 @@ public:
     // 2023-02-13 21:45:00 => 2023-02-13 21:45:01
     void addSecond(int second = 1);
     void operator+=(int64_t st);
+    void operator-=(int64_t st);
 
     // 2023-02-13 21:45:00 => 2023-02-13 21:46:00
     void addMinute(int minute = 1);

@@ -74,6 +74,31 @@ OpenTime::OpenTime(int year, int mouth, int day, int hour, int minute, int secon
     dateToUnixtime();
 }
 
+OpenTime::OpenTime(const OpenTime& openTime)
+    :second_(0),
+    minute_(0),
+    hour_(0),
+    day_(0),
+    month_(0),
+    year_(0)
+{
+    timezone_ = openTime.timezone_;
+    unixtime_ = openTime.unixtime_;
+    unixtimeToDate();
+}
+
+void OpenTime::operator=(const OpenTime& openTime)
+{
+    timezone_ = openTime.timezone_;
+    unixtime_ = openTime.unixtime_;
+    unixtimeToDate();
+}
+
+bool OpenTime::operator==(const OpenTime& openTime)
+{
+    return timezone_ == openTime.timezone_ && unixtime_ == openTime.unixtime_;
+}
+
 uint16_t OpenTime::wday()
 {
     int64_t st = unixtime_ + timezone_ * 3600;
@@ -85,6 +110,12 @@ uint16_t OpenTime::wday()
 void OpenTime::operator+=(int64_t st)
 {
     unixtime_ += st;
+    unixtimeToDate();
+}
+
+void OpenTime::operator-=(int64_t st)
+{
+    unixtime_ -= st;
     unixtimeToDate();
 }
 
@@ -222,7 +253,7 @@ void OpenTime::unixtimeToDate()
                 }
                 else
                 {
-                    day_ = tempTS + 1; 
+                    day_ = (uint16_t)(tempTS + 1); 
                     return;
                 }
             }
@@ -244,12 +275,12 @@ void OpenTime::unixtimeToDate()
             }
             else
             {
-                day_ = tempTS + 1; 
+                day_ = (uint16_t)(tempTS + 1);
                 return;
             }
         }
     }
-    unsigned int years = tempTS / (365 * 4 + 1) * 4;
+    unsigned int years = (unsigned int)(tempTS / (365 * 4 + 1) * 4);
     tempTS %= 365 * 4 + 1;
     year_ += years;
     for (int i = 0; i < 3; ++i)
@@ -270,7 +301,7 @@ void OpenTime::unixtimeToDate()
                 }
                 else
                 {
-                    day_ = tempTS + 1; 
+                    day_ = (uint16_t)(tempTS + 1); 
                     return;
                 }
             }
@@ -285,7 +316,7 @@ void OpenTime::unixtimeToDate()
         }
         else
         {
-            day_ = tempTS + 1;
+            day_ = (uint16_t)(tempTS + 1);
         }
     }
 }
@@ -328,7 +359,7 @@ void OpenTime::fromIntTime(int64_t dateTime)
         dateTime /= 100;
         month_ = dateTime % 100;
         dateTime /= 100;
-        year_ = dateTime;
+        year_ = (uint32_t)dateTime;
         hour_ = 0;
         minute_ = 0;
         second_ = 0;
@@ -345,7 +376,7 @@ void OpenTime::fromIntTime(int64_t dateTime)
         dateTime = (dateTime - day_) / 100;
         month_ = dateTime % 100;
         dateTime = (dateTime - month_) / 100;
-        year_ = dateTime;
+        year_ = (uint32_t)dateTime;
     }
     dateToUnixtime();
 }
@@ -360,7 +391,11 @@ int64_t OpenTime::toIntTime()
 bool OpenTime::fromString(const std::string& strTime)
 {
     int n[6] = { 0 };
+#if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
+    int ret = sscanf_s(strTime.c_str(), "%04d-%02d-%02d %02d:%02d:%02d", &n[0], &n[1], &n[2], &n[3], &n[4], &n[5]);
+#else
     int ret = sscanf(strTime.c_str(), "%04d-%02d-%02d %02d:%02d:%02d", &n[0], &n[1], &n[2], &n[3], &n[4], &n[5]);
+#endif
     if (!ret) return false;
     year_ = n[0]; month_  = n[1]; day_    = n[2];
     hour_ = n[3]; minute_ = n[4]; second_ = n[5];
@@ -463,7 +498,7 @@ bool OpenTime::fromGMT(const std::string& strTime)
                 {
                     if (MonthNames[k] == str)
                     {
-                        month_ = k + 1; break;
+                        month_ = (uint16_t)(k + 1); break;
                     }
                 }
                 break;
@@ -596,7 +631,7 @@ std::string OpenTime::ToString(int64_t unixtime, int timezone)
 void OpenTime::Sleep(int64_t milliSecond)
 {
 #if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
-    ::Sleep(milliSecond);
+    ::Sleep((DWORD)milliSecond);
 #else
     // struct timespec ts;
     // ts.tv_sec = (time_t)(milliSecond / 1000);
