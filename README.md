@@ -40,20 +40,12 @@ int main()
 
     //2023-02-18 00:00:00
     openTime = "2023-02-18 15:18:58";
-<<<<<<< HEAD
     int64_t alignTime = openTime.alignDay();
-=======
-    int64_t alignTime = openTime.alignDayTime();
->>>>>>> fc2a48bee0e41a59b24c77946e06ee27cdf249cc
     strTime = OpenTime::ToString(alignTime);
     assert(strTime == "2023-02-18 00:00:00");
     
     thatTime = 1642490337;
-<<<<<<< HEAD
     alignTime = OpenTime::AlignDay(thatTime);
-=======
-    alignTime = OpenTime::AlignDayTime(thatTime);
->>>>>>> fc2a48bee0e41a59b24c77946e06ee27cdf249cc
     strTime = OpenTime::ToString(alignTime);
     assert(strTime == "2022-01-18 00:00:00");
 
