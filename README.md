@@ -1,4 +1,5 @@
 # OpenTime
+Cross-platform multi-threaded design!
 OpenTime for C++, Super easy to use Time!
 
 ## Test Demo
