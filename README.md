@@ -2,6 +2,32 @@
 Cross-platform multi-threaded design!
 OpenTime for C++, Super easy to use Time!
 
+**The OpenLinyou project designs a cross-platform server framework. Write code in VS or XCode and run it on Linux without any changes, even on Android and iOS.**
+OpenLinyou：https://github.com/openlinyou
+
+## Cross-platform support
+Linux and Android use epoll, iOS and Mac use kqueue, other systems (Windows) use select, so the number of io cannot exceed 64.
+
+## Compilation and execution
+Please install the cmake tool. With cmake you can build a VS or XCode project and compile and run it on VS or XCode. 
+Source code:https://github.com/openlinyou/opentime
+```
+# Clone the project
+git clone https://github.com/openlinyou/opentime
+cd ./opentime
+# Create a build project directory
+mkdir build
+cd build
+cmake ..
+# If it's win32, opentime.sln will appear in this directory. Click it to start VS for coding and debugging.
+make
+./test
+```
+
+## All source files
++ src/opentime.h
++ src/opentime.cpp
+
 ## Test Demo
 ```C++
 #include <assert.h>
@@ -81,18 +107,4 @@ int main()
 }
 ```
 
-## Environment
-Windows、linux etc. Cross-platform design
 
-## Build and run
-```
-cd ./opentime
-mkdir build
-cd build
-cmake ..
-make
-./test
-```
-## Source file list
-. src/opentime.h
-. src/opentime.cpp

@@ -3,10 +3,14 @@
 程序开发频繁涉及时间处理，有一个好用的时间库可以大幅提高工作效率。
 OpenTime是最简单易用的C++处理时间工具。
 
+**OpenLinyou项目设计跨平台服务器框架，在VS或者XCode上写代码，无需任何改动就可以编译运行在Linux上，甚至是安卓和iOS.**
+OpenLinyou：https://github.com/openlinyou
+
 ## 跨平台支持
-Windows、linux等跨平台设计
+Windows、linux、Mac、iOS、Android等跨平台设计
 
 ## 编译和执行
+请安装cmake工具，用cmake可以构建出VS或者XCode工程，就可以在vs或者xcode上编译运行。
 源代码：https://github.com/openlinyou/opentime
 ```
 git clone https://github.com/openlinyou/opentime
@@ -14,9 +18,15 @@ cd ./opentime
 mkdir build
 cd build
 cmake ..
+#如果是win32，在该目录出现opentime.sln，点击它就可以启动vs写代码调试
 make
 ./test
 ```
+
+## 全部源文件
++ src/opentime.h
++ src/opentime.cpp
+
 
 ## 1.时间戳转换成字符串
 ```C++
