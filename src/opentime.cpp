@@ -628,6 +628,12 @@ std::string OpenTime::ToString(int64_t unixtime, int timezone)
     return dt.toString();
 }
 
+std::string OpenTime::MilliToString(int64_t milliSecond, int timezone)
+{
+    OpenTime dt(milliSecond / 1000, timezone);
+    return dt.toString(milliSecond % 1000);
+}
+
 void OpenTime::Sleep(int64_t milliSecond)
 {
 #if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
@@ -649,9 +655,25 @@ int64_t OpenTime::Unixtime()
 int64_t OpenTime::MilliUnixtime()
 {
 #if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
-    int64_t systemTime = 0;
-    ::GetSystemTimeAsFileTime((LPFILETIME)&systemTime);
-    int64_t milliSecond = (systemTime / 10000000 - 11644473600LL) * 1000 + (systemTime / 10) % 1000000;
+    //int64_t systemTime = 0;
+    //::GetSystemTimeAsFileTime((LPFILETIME)&systemTime);
+    //int64_t milliSecond = (systemTime / 10000000 - 11644473600LL) * 1000 + (systemTime / 10) % 1000000;
+    //return milliSecond;
+    SYSTEMTIME wtm;
+    GetLocalTime(&wtm);
+    struct tm tm;
+    tm.tm_year = wtm.wYear - 1900;
+    tm.tm_mon = wtm.wMonth - 1;
+    tm.tm_mday = wtm.wDay;
+    tm.tm_hour = wtm.wHour;
+    tm.tm_min = wtm.wMinute;
+    tm.tm_sec = wtm.wSecond;
+    tm.tm_isdst = -1;
+    time_t clock = mktime(&tm);
+    struct timeval tv;
+    tv.tv_sec = (long)clock;
+    tv.tv_usec = wtm.wMilliseconds * 1000;
+    int64_t milliSecond = ((unsigned long long)tv.tv_sec * 1000 + (unsigned long long)tv.tv_usec / 1000);
     return milliSecond;
 #else
     struct timeval tv;

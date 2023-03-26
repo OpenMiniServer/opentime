@@ -140,6 +140,7 @@ public:
 
     static int64_t AlignDay(int64_t unixtime, int timezone = OPENTIME_TIMEZONE);
     static std::string ToString(int64_t utctime, int timezone = OPENTIME_TIMEZONE);
+    static std::string MilliToString(int64_t milliSecond, int timezone = OPENTIME_TIMEZONE);
     static void Sleep(int64_t milliSecond);
     // timestamp
     static int64_t Unixtime();
